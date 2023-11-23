@@ -7,6 +7,7 @@ const ProductList = () => {
     store.subscribe(() => {
         var state = store.getState();
         console.log(state.home.productsData);
+        console.log("state.home.productsData");
         setProducts(state.home.productsData);
     });
 
@@ -20,7 +21,7 @@ const ProductList = () => {
                             <div className="card-body">
                                 <figure>
                                     <img className='max-w-'
-                                        src={`http://localhost:5000/${product.imagePath}`} alt="Shoes" /></figure>
+                                        src={`http://localhost:3200/${product.imagePath}`} alt="Shoes" /></figure>
                                 <h2 className="card-title">
                                     {product.name}
                                     <div className="badge badge-secondary">NEW</div>

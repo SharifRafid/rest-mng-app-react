@@ -30,7 +30,7 @@ const AddProduct = () => {
         formDataToSend.append('imageFile', formData.imageFile);
 
         try {
-            const response = await axios.post('http://localhost:5000/api/products', formDataToSend, {
+            const response = await axios.post('http://localhost:3200/api/products', formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

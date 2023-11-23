@@ -7,7 +7,7 @@ const ProductListCustomer = ({ restaurantId }) => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/products?restaurantId=${restaurantId}`);
+                const response = await axios.get(`http://localhost:3200/api/products?restaurantId=${restaurantId}`);
                 setProducts(response.data)
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -27,7 +27,7 @@ const ProductListCustomer = ({ restaurantId }) => {
                             <div className="card-body">
                                 <figure>
                                     <img className='max-w-'
-                                        src={`http://localhost:5000/${product.imagePath}`} alt="Shoes" /></figure>
+                                        src={`http://localhost:3200/${product.imagePath}`} alt="Shoes" /></figure>
                                 <h2 className="card-title">
                                     {product.name}
                                     <div className="badge badge-secondary">NEW</div>
