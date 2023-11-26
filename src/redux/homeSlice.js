@@ -3,30 +3,26 @@ import { createSlice } from "@reduxjs/toolkit"
 const homeSlice = createSlice({
     name: 'home',
     initialState: {
-        showToast: false,
-        productsData: [],
-        resId: null,
-        time: 0,
+        products: [],
+        cartItems: [],
+        wishListItems: [],
+        orderItems: [],
     },
     reducers: {
-        showToast(state, action) {
-            state.showToast = action.payload
-        },
         setProductsData(state, action) {
-            state.productsData = action.payload
+            state.products = action.payload
         },
-        addProductItem(state, action) {
-            state.productsData.push(action.payload)
+        setCartProductsData(state, action) {
+            state.cartItems = action.payload
         },
-        setRestaurantId(state, action) {
-            state.resId = action.payload
+        setWishlistProductsData(state, action) {
+            state.wishListItems = action.payload
         },
-        setRestaurantIdTime(state, action) {
-            state.time = action.payload
-        }
+        setOrdersData(state, action) {
+            state.orderItems = action.payload
+        },
     }
 })
 
-export const { showToast, setProductsData, addProductItem,
-    setRestaurantId,setRestaurantIdTime } = homeSlice.actions
+export const { setProductsData, setCartProductsData, setWishlistProductsData,setOrdersData } = homeSlice.actions
 export default homeSlice.reducer

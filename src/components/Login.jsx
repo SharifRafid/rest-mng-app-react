@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { addProductItem, setRestaurantId, setRestaurantIdTime, showToast } from '../redux/homeSlice';
-import { updateLoginState } from '../redux/authSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateConsumerLoginState, updateLoginState } from '../redux/authSlice';
+import { loginConsumer, loginUser, signUpConsumer, signUpUser } from '../services/apiService';
+import { toast } from 'react-toastify';
+import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 
-const AddProduct = () => {
+const getIsRestaurantCustomer = state => state.auth.isCustomer;
+
+const LoginPage = () => {
+
     const dispatch = useDispatch();
+
+    const _isCustomer = useSelector(getIsRestaurantCustomer);
 
     const [formData, setFormData] = useState({
         email: '',
         name: '',
         password: '',
+        captcha: ''
     });
 
     const [isLogin, setIsLogin] = useState(false);
@@ -19,50 +26,73 @@ const AddProduct = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleFileChange = (e) => {
-        setFormData({ ...formData, imageFile: e.target.files[0] });
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios
-                .post('http://localhost:3200/api/login',
-                    formData,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-            if (response.data) {
+        if (formData.email == "" || formData.password == "") {
+            toast.error("Email or Password Cannot Be Empty");
+            return;
+        }
+        if (!isLogin && formData.name == "") {
+            toast.error("Restaurant Name Cannot Be Empty");
+            return;
+        }
+        if (validateCaptcha(formData.captcha, false)!=true) {
+            toast.error('Please fill the captcha authentication correctly');
+            return;
+        } 
+        const response = isLogin ?
+            _isCustomer ?
+                await loginConsumer(formData.email, formData.password) :
+                await loginUser(formData.email, formData.password)
+            :
+            _isCustomer ?
+                await signUpConsumer(formData.email, formData.password, formData.name) :
+                await signUpUser(formData.email, formData.password, formData.name);
+        if (response.data) {
+            if (_isCustomer) {
+                localStorage.setItem("emailConsumer", response.data.email);
+                localStorage.setItem("passwordConsumer", response.data.password);
+                localStorage.setItem("nameConsumer", response.data.name);
+                dispatch(updateConsumerLoginState({
+                    loggedIn: true,
+                    email: response.data.email,
+                    password: response.data.password,
+                    name: response.data.name,
+                }));
+            } else {
                 localStorage.setItem("email", response.data.email);
                 localStorage.setItem("password", response.data.password);
                 localStorage.setItem("name", response.data.name);
                 localStorage.setItem("restaurantId", response.data.restaurantId);
-                dispatch(setRestaurantId(response.data.restaurantId));
-                dispatch(setRestaurantIdTime(response.data.restaurantId));
                 dispatch(updateLoginState({
                     loggedIn: true,
                     email: response.data.email,
-                    password: response.data.password
+                    password: response.data.password,
+                    name: response.data.name,
+                    restaurantId: response.data.restaurantId,
                 }));
-            } else {
-                // dispatch(showToast({status:true,message:response.statusText}));
             }
-        } catch (error) {
-            console.error('Error creating product:', error);
+        } else {
+            toast.error(response.error.message);
         }
     };
 
+    useEffect(()=>{
+        loadCaptchaEnginge(6); 
+    },[])
+
     return (
         <div className='flex flex-col items-center justify-center'>
-            <h1 className="m-4 text-2xl text-center font-bold">{isLogin ? "Login" : "Register"}</h1>
+            <h1 className="m-4 text-2xl text-center font-bold">{isLogin ?
+                _isCustomer ? "Customer Login" : "Restaurant Login" :
+                _isCustomer ? "Customer Registration" : "Restaurant Registration"
+            }</h1>
 
             {!isLogin ?
                 <input
                     className="input m-4 input-bordered input-primary w-full max-w-xs"
                     type="text"
-                    placeholder="Name"
+                    placeholder={_isCustomer ? `Name` : `Restaurant Name`}
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
@@ -77,6 +107,7 @@ const AddProduct = () => {
                 value={formData.email}
                 onChange={handleInputChange}
             />
+
             <input
                 className="input m-4 input-bordered input-primary w-full max-w-xs"
                 type="text"
@@ -85,12 +116,29 @@ const AddProduct = () => {
                 value={formData.password}
                 onChange={handleInputChange}
             />
+
+            <LoadCanvasTemplate />
+            
+            <input
+                className="input m-4 input-bordered input-primary w-full max-w-xs"
+                type="text"
+                placeholder="Write the letters shown"
+                name="captcha"
+                value={formData.captcha}
+                onChange={handleInputChange}
+            />
+
             <button className="btn m-4 btn-primary" onClick={handleSubmit}>{isLogin ? "Login" : "Register"}</button>
             <button className="m-4" onClick={() => {
                 setIsLogin(!isLogin);
-            }}>{!isLogin ? "Login" : "Register"}</button>
+            }}>{
+                    !isLogin ?
+                        <h2>Already a user? <b>Login</b></h2> :
+                        <h2>Not a user yet? <b>Register</b></h2>
+                }
+            </button>
         </div>
     );
 };
 
-export default AddProduct;
+export default LoginPage;
