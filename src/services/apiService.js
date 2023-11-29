@@ -19,7 +19,54 @@ export async function loginUser(email, password) {
         console.log(error);
         return {
             data: null,
-            error: "error.response.data",
+            error: error.response.data,
+        };
+    }
+}
+
+export async function loginAdmin(email, password) {
+    try {
+        var response = await axios
+            .post(`${API_BASE_URL}/login-admin`,
+                {
+                    "email": email,
+                    "password": password,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        return response;
+    } catch (error) {
+        console.log(error);
+        return {
+            data: null,
+            error: error.response.data,
+        };
+    }
+}
+
+export async function signUpAdmin(email, password, name) {
+    try {
+        var response = await axios
+            .post(`${API_BASE_URL}/signup-admin`,
+                {
+                    "email": email,
+                    "password": password,
+                    "name": name,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        return response;
+    } catch (error) {
+        console.log(error);
+        return {
+            data: null,
+            error: error.response.data,
         };
     }
 }
@@ -89,7 +136,7 @@ export async function loginConsumer(email, password) {
         console.log(error);
         return {
             data: null,
-            error: "error.response.data",
+            error: error.response.data,
         };
     }
 }
@@ -141,7 +188,6 @@ export async function signUpConsumer(email, password, name) {
     }
 }
 
-
 export async function addProduct(name, price, restaurantId, imageFile, shortDesc, desc) {
     const formDataToSend = new FormData();
     formDataToSend.append('name', name);
@@ -153,6 +199,55 @@ export async function addProduct(name, price, restaurantId, imageFile, shortDesc
     try {
         var response = await axios
             .post(`${API_BASE_URL}/products`,
+                formDataToSend,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function addRestaurant(name, email, password, imageFile, shortDesc, desc) {
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', name);
+    formDataToSend.append('email', email);
+    formDataToSend.append('password', password);
+    formDataToSend.append('imageFile', imageFile);
+    formDataToSend.append('shortDescription', shortDesc);
+    formDataToSend.append('description', desc);
+    try {
+        var response = await axios
+            .post(`${API_BASE_URL}/add-restaurant`,
+                formDataToSend,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function updateRestaurant(id, name, email, password, imageFile, shortDesc, desc) {
+    const formDataToSend = new FormData();
+    formDataToSend.append('id', id);
+    formDataToSend.append('name', name);
+    formDataToSend.append('email', email);
+    formDataToSend.append('password', password);
+    formDataToSend.append('imageFile', imageFile);
+    formDataToSend.append('shortDescription', shortDesc);
+    formDataToSend.append('description', desc);
+    try {
+        var response = await axios
+            .post(`${API_BASE_URL}/update-restaurant`,
                 formDataToSend,
                 {
                     headers: {
@@ -188,6 +283,27 @@ export async function getOrders(restaurantId) {
     }
 }
 
+export async function getAllOrders() {
+    try {
+        var response = await axios
+            .get(`${API_BASE_URL}/orders`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+export async function getRestaurants() {
+    try {
+        var response = await axios
+            .get(`${API_BASE_URL}/restaurants`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
 
 export async function getCartProducts(email, password) {
     try {
@@ -339,6 +455,28 @@ export async function deleteProduct(id) {
     try {
         var response = await axios
             .delete(`${API_BASE_URL}/products?id=${id}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function deleteRestaurant(id) {
+    try {
+        var response = await axios
+            .delete(`${API_BASE_URL}/restaurants?id=${id}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function activeOrInactiveRest(id) {
+    try {
+        var response = await axios
+            .post(`${API_BASE_URL}/restaurants-set-active?id=${id}`);
         return response;
     } catch (error) {
         console.log(error);

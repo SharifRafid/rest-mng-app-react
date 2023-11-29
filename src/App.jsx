@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import Home from "./components/restaurant/Home";
 import { useDispatch } from "react-redux";
-import { setCustomerRestaurantId } from "./redux/authSlice";
+import { setCustomerRestaurantId, setIsAdmin } from "./redux/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import HomeConsumer from "./components/consumer/HomeConsumer";
+import HomeAdmin from "./components/admin/HomeAdmin";
 
 function App() {
   const dispatch = useDispatch();
@@ -12,14 +13,17 @@ function App() {
   const params = new URLSearchParams(window.location.search);
 
   useEffect(() => {
-    if (params.get("restaurantId")) {
+    if (window.location.pathname == "/admin") {
+      dispatch(setIsAdmin(true));
+    } else if (params.get("restaurantId")) {
       dispatch(setCustomerRestaurantId(params.get("restaurantId")));
     }
   }, []);
 
   return (
     <div data-theme="light">
-      {
+      {window.location.pathname == "/admin" ?
+        <HomeAdmin /> :
         params.get("restaurantId") != null ?
           <HomeConsumer /> :
           <Home />

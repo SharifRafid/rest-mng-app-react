@@ -9,6 +9,7 @@ const todosSlice = createSlice({
         name: null,
         restaurantId: null,
         isCustomer: false,
+        isAdmin: false,
     },
     reducers: {
         updateLoginState(state, action) {
@@ -24,6 +25,13 @@ const todosSlice = createSlice({
             state.password = action.payload.password
             state.name = action.payload.name
         },
+        updateAdminLoginState(state, action) {
+            state.loggedIn = action.payload.loggedIn
+            state.email = action.payload.email
+            state.password = action.payload.password
+            state.name = action.payload.name
+            state.isAdmin = true
+        },
         setUserIsLoggedIn(state, action) {
             state.loggedIn = action.payload
         },
@@ -31,9 +39,14 @@ const todosSlice = createSlice({
             state.restaurantId = action.payload
             state.isCustomer = true
             state.loggedIn = false
+        },
+        setIsAdmin(state, action) {
+            state.isAdmin = action.payload
         }
     }
 })
 
-export const { updateLoginState, setUserIsLoggedIn, setCustomerRestaurantId, updateConsumerLoginState } = todosSlice.actions
+export const { updateLoginState, setUserIsLoggedIn,
+    setCustomerRestaurantId, updateConsumerLoginState,
+    setIsAdmin, updateAdminLoginState } = todosSlice.actions
 export default todosSlice.reducer
