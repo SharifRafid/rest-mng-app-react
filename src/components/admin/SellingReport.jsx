@@ -5,7 +5,7 @@ import { FILES_BASE_URL } from '../../utils/constants';
 import { deleteRestaurant } from '../../services/apiService';
 import { setRestaurantsData } from '../../redux/homeSlice';
 
-const getOrders = state => state.home.orders;
+const getOrders = state => state.home.orderItems;
 const getRestaurants = state => state.home.restaurants;
 const getIsConsumer = state => state.auth.isCustomer;
 const getUserData = state => state.auth;
@@ -17,6 +17,8 @@ const SellingReport = () => {
     const restaurants = useSelector(getRestaurants);
     const isConsumer = useSelector(getIsConsumer);
     const userData = useSelector(getUserData);
+
+    console.log(orders)
 
     return (
         <div className='w-full h-full'>
@@ -37,7 +39,7 @@ const SellingReport = () => {
                                 </div>
                                 <div className='flex flex-col m-4 justify-center items-center'>
                                     <h2 className="card-title text-6xl m-4">
-                                        {orders ? orders.filter(item => item.restaurantId == product._id).length : 0}
+                                        {orders ? orders.filter(item => item.restaurantId == product.restaurantId).length : 0}
                                     </h2>
                                     <h2 className="card-title">
                                         Total Orders
