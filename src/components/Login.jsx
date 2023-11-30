@@ -153,7 +153,7 @@ const LoginPage = () => {
             <button className="m-4" onClick={() => {
                 setIsLogin(!isLogin);
             }}>
-                {_isCustomer || _isAdmin ?
+                {_isCustomer ?
                     !isLogin ?
                         <h2>Already a user? <b>Login</b></h2> :
                         <h2>Not a user yet? <b>Register</b></h2>

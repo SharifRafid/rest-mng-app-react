@@ -208,7 +208,10 @@ export async function addProduct(name, price, restaurantId, imageFile, shortDesc
         return response;
     } catch (error) {
         console.log(error);
-        return null;
+        return {
+            data: null,
+            error: error.response.data,
+        };
     }
 }
 

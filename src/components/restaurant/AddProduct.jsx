@@ -53,8 +53,8 @@ const AddProduct = () => {
                 });
                 filePickerRef.current.value = null;
                 toast.success("Successfully added product.");
-            } else {
-                toast.error("Failed to add product.");
+            } else {    
+                toast.error(response.error.message);
             }
         } catch (error) {
             toast.error("Failed to add product.");
