@@ -4,6 +4,7 @@ import { FILES_BASE_URL } from '../utils/constants';
 import { addProductToCart, addProductToWishist, deleteProduct } from '../services/apiService';
 import { setCartProductsData, setProductsData, setWishlistProductsData } from '../redux/homeSlice';
 import { toast } from 'react-toastify';
+import OrderItem from './admin/OrderItem';
 
 const getOrders = state => state.home.orderItems;
 const getIsConsumer = state => state.auth.isCustomer;
@@ -22,7 +23,7 @@ const OrderList = () => {
             {orders.length !== 0 ? (
                 <ul className='flex flex-col'>
                     {orders.map(order => (
-                        <div key={order._id} className="card w-auto bg-base-100 shadow-xl m-2">
+                        isConsumer ? <div key={order._id} className="card w-auto bg-base-100 shadow-xl m-2">
                             <div className="card-body">
                                 <p>Name: {order.name}</p>
                                 <p>Email: {order.email}</p>
@@ -44,7 +45,8 @@ const OrderList = () => {
                                     ))}
                                 </ul>
                             </div>
-                        </div>
+                        </div> :
+                            <OrderItem order={order} key={order._id} />
                     ))}
                 </ul>
             ) : (

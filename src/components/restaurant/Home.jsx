@@ -5,12 +5,13 @@ import ProductList from "../ProductList";
 import AddProduct from "./AddProduct";
 import QRCodePage from "./QRCodePage";
 import { getOrders, getProducts, loginUser } from "../../services/apiService";
-import { setOrdersData, setProductsData } from "../../redux/homeSlice";
+import { setOrdersData, setProductsData, setRestaurantsTables } from "../../redux/homeSlice";
 import { toast } from "react-toastify";
 import EditProfile from "./EditProfile";
 import ProgressPage from "../Progress";
 import LoginPage from "../Login";
 import OrderList from "../OrderList";
+import TableList from "./TableList";
 
 const getUserData = state => state.auth;
 
@@ -70,6 +71,7 @@ function Home() {
                         restaurantId: response.data.restaurantId,
                     }));
                     fetchProductsList(response.data.restaurantId);
+                    dispatch(setRestaurantsTables(response.data.tables));
                 } else {
                     dispatch(setUserIsLoggedIn(false));
                 }
@@ -109,7 +111,11 @@ function Home() {
                                             <QRCodePage /> :
                                             currentPage == 3 ?
                                                 <EditProfile /> :
-                                                <OrderList />
+                                                currentPage == 3 ?
+                                                    <EditProfile /> :
+                                                    currentPage == 4 ?
+                                                        <OrderList /> :
+                                                        <TableList />
                             }
                         </div>
                     </div>
@@ -147,6 +153,13 @@ function Home() {
                                     fetchOrdersList();
                                     hideDrawer();
                                 }}>Orders</a>
+                            </li>
+                            <li>
+                                <a className={`p-2 ${currentPage === 5 ? 'bg-primary text-white' : ''}`} onClick={() => {
+                                    setCurrentPage(5);
+                                    fetchOrdersList();
+                                    hideDrawer();
+                                }}>Tables</a>
                             </li>
                         </ul>
                     </div>

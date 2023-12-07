@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import ProductList from "../ProductList";
-import { getCartProducts, getOrders, getProducts, getWishistProducts, loginConsumer } from "../../services/apiService";
-import { setCartProductsData, setOrdersData, setProductsData, setWishlistProductsData } from "../../redux/homeSlice";
+import { getCartProducts, getOrders, getProducts, getTables, getWishistProducts, loginConsumer } from "../../services/apiService";
+import { setCartProductsData, setOrdersData, setProductsData, setRestaurantsTables, setWishlistProductsData } from "../../redux/homeSlice";
 import { toast } from "react-toastify";
 import WishlistPage from "./WishListPage";
 import CartPage from "./CartPage";
@@ -90,6 +90,17 @@ function HomeConsumer() {
         }
     }
 
+
+    const fetchTablesList = async (resId) => {
+        var response = await getTables(resId ?? userData.restaurantId);
+        if (response) {
+            console.log(response.data);
+            dispatch(setRestaurantsTables(response.data));
+        } else {
+            // toast.warn("No oders found");
+        }
+    }
+
     return (
         userData.loggedIn == null ?
             <ProgressPage /> :
@@ -115,6 +126,7 @@ function HomeConsumer() {
                                 <li>
                                     <a className={`p-2 ${currentPage === 1 ? 'bg-primary text-white' : ''}`} onClick={() => {
                                         setCurrentPage(1);
+                                        fetchTablesList();
                                         fetchCartsList();
                                     }}>Cart</a>
                                 </li>

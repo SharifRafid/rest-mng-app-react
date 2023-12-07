@@ -4,6 +4,7 @@ const homeSlice = createSlice({
     name: 'home',
     initialState: {
         products: [],
+        tables: [],
         cartItems: [],
         wishListItems: [],
         orderItems: [],
@@ -25,10 +26,13 @@ const homeSlice = createSlice({
         setRestaurantsData(state, action) {
             state.restaurants = action.payload
         },
+        setRestaurantsTables(state, action) {
+            state.tables = action.payload
+        },
     }
 })
 
 export const { setProductsData, setCartProductsData,
     setWishlistProductsData, setOrdersData,
-    setRestaurantsData } = homeSlice.actions
+    setRestaurantsData, setRestaurantsTables } = homeSlice.actions
 export default homeSlice.reducer

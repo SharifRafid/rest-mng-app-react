@@ -432,7 +432,7 @@ export async function removeProductFromWishist(email, password, productId) {
     }
 }
 
-export async function placeOrder(email, password, restaurantId, totalPrice) {
+export async function placeOrder(email, password, restaurantId, totalPrice, tableName) {
     try {
         var response = await axios
             .post(`${API_BASE_URL}/placeOrder`,
@@ -441,6 +441,7 @@ export async function placeOrder(email, password, restaurantId, totalPrice) {
                     "password": password,
                     "restaurantId": restaurantId,
                     "totalPrice": totalPrice,
+                    "tableName": tableName
                 },
                 {
                     headers: {
@@ -484,5 +485,51 @@ export async function activeOrInactiveRest(id) {
     } catch (error) {
         console.log(error);
         return null;
+    }
+}
+
+export async function changeOrderStatus(id, status) {
+    try {
+        var response = await axios
+            .post(`${API_BASE_URL}/update-order-status?id=${id}&status=${status}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function addRestaurantTable(id, name) {
+    try {
+        var response = await axios
+            .post(`${API_BASE_URL}/res-tables?id=${id}&name=${name}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+
+export async function getTables(restaurantId) {
+    try {
+        var response = await axios
+            .get(`${API_BASE_URL}/tables?restaurantId=${restaurantId}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+
+export async function deleteTables(restaurantId,tableName) {
+    try {
+        var response = await axios
+            .delete(`${API_BASE_URL}/delete-tables?id=${restaurantId}&name=${tableName}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return [];
     }
 }
