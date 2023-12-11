@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 const getCartProducts = state => state.home.cartItems;
 const getTables = state => state.home.tables;
+const getWifiPass = state => state.home.wifiPass;
 const getUserData = state => state.auth;
 
 const CartPage = () => {
@@ -22,12 +23,27 @@ const CartPage = () => {
         }
     };
 
+    const wifiPass = useSelector(getWifiPass);
     const products = useSelector(getCartProducts);
     const tables = useSelector(getTables);
     const userData = useSelector(getUserData);
 
     return (
         <div className='w-full h-full'>
+            <dialog id="my_modal_4" className="modal">
+                <div className="modal-box w-1/2 max-w-5xl">
+                    <h3 className="font-bold text-lg">Click to copy the wifi pass : </h3>
+                    <p className="py-4">{wifiPass}</p>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            {/* if there is a button, it will close the modal */}
+                            <button className="btn" onClick={() => {
+                                navigator.clipboard.writeText(wifiPass); // Copy wifiPass to clipboard
+                            }}>Copy</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
             <div className="flex flex-row items-center justify-between w-full">
                 <h2 className='m-4 text-2xl text-center font-bold'>Products</h2>
                 <button className="btn m-4 btn-primary" onClick={async () => {
@@ -35,6 +51,7 @@ const CartPage = () => {
                     if (response) {
                         dispatch(setCartProductsData([]));
                         dispatch(setRestaurantsTables([]));
+                        document.getElementById('my_modal_4').showModal()
                         toast.success("Successfully Placed Order");
                     } else {
                         toast.warn("No products found");
@@ -48,8 +65,7 @@ const CartPage = () => {
                         <button
                             key={index}
                             onClick={() => handleButtonClick(tableItem)}
-                            className={`btn ${selectedOption === tableItem ? 'btn-primary' : 'btn-secondary'}`}
-                        >
+                            className={`btn ${selectedOption === tableItem ? 'btn-primary' : 'btn-secondary'}`}>
                             {tableItem.name}
                         </button>
                     ))}

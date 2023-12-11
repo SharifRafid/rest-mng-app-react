@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const homeSlice = createSlice({
     name: 'home',
     initialState: {
+        wifiPass: "",
         products: [],
         tables: [],
         cartItems: [],
@@ -29,10 +30,14 @@ const homeSlice = createSlice({
         setRestaurantsTables(state, action) {
             state.tables = action.payload
         },
+        setRestaurantWifiPass(state, action) {
+            state.wifiPass = action.payload
+        },
     }
 })
 
 export const { setProductsData, setCartProductsData,
     setWishlistProductsData, setOrdersData,
-    setRestaurantsData, setRestaurantsTables } = homeSlice.actions
+    setRestaurantsData, setRestaurantsTables,
+    setRestaurantWifiPass } = homeSlice.actions
 export default homeSlice.reducer

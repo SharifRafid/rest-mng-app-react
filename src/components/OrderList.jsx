@@ -33,6 +33,7 @@ const OrderList = () => {
                                 <p>Wifi Pass: {order.wifiPass}</p>
                                 <p>Table Name: {order.tableName}</p>
                                 <p>Table No: {order.tableId}</p>
+                                <p>WIFI Password: {order.wifiPass}</p>
                                 <p>Order Status: {order.orderStatus}</p>
                                 <h3>Products:</h3>
                                 <ul>

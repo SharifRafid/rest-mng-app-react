@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import ProductList from "../ProductList";
-import { getCartProducts, getOrders, getProducts, getTables, getWishistProducts, loginConsumer } from "../../services/apiService";
-import { setCartProductsData, setOrdersData, setProductsData, setRestaurantsTables, setWishlistProductsData } from "../../redux/homeSlice";
+import { getCartProducts, getOrders, getProducts, getRestaurant, getTables, getWishistProducts, loginConsumer } from "../../services/apiService";
+import { setCartProductsData, setOrdersData, setProductsData, setRestaurantWifiPass, setRestaurantsTables, setWishlistProductsData } from "../../redux/homeSlice";
 import { toast } from "react-toastify";
 import WishlistPage from "./WishListPage";
 import CartPage from "./CartPage";
@@ -101,6 +101,16 @@ function HomeConsumer() {
         }
     }
 
+    const fetchRestaurantData = async (resId) => {
+        var response = await getRestaurant(resId ?? userData.restaurantId);
+        if (response) {
+            console.log(response.data);
+            dispatch(setRestaurantWifiPass(response.data.wifiPass));
+        } else {
+            // toast.warn("No oders found");
+        }
+    }
+
     return (
         userData.loggedIn == null ?
             <ProgressPage /> :
@@ -128,6 +138,7 @@ function HomeConsumer() {
                                         setCurrentPage(1);
                                         fetchTablesList();
                                         fetchCartsList();
+                                        fetchRestaurantData();
                                     }}>Cart</a>
                                 </li>
                                 <li>

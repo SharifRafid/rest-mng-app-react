@@ -524,6 +524,16 @@ export async function getTables(restaurantId) {
     }
 }
 
+export async function getRestaurant(restaurantId) {
+    try {
+        var response = await axios
+            .get(`${API_BASE_URL}/restaurantData?restaurantId=${restaurantId}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
 
 export async function deleteTables(restaurantId, tableName, tableNum) {
     try {
