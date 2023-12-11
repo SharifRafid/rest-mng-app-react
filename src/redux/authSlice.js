@@ -10,6 +10,7 @@ const todosSlice = createSlice({
         restaurantId: null,
         isCustomer: false,
         isAdmin: false,
+        wifiPass: null,
     },
     reducers: {
         updateLoginState(state, action) {
@@ -18,6 +19,7 @@ const todosSlice = createSlice({
             state.password = action.payload.password
             state.name = action.payload.name
             state.restaurantId = action.payload.restaurantId
+            state.wifiPass = action.payload.wifiPass
         },
         updateConsumerLoginState(state, action) {
             state.loggedIn = action.payload.loggedIn

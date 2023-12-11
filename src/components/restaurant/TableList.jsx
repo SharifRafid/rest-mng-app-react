@@ -26,26 +26,26 @@ const TableList = () => {
                         {
                             tables.map((product) => (
                                 <button
-                                    key={product}
-                                    className={orders.some(item => item.tableName === product
-                                         && item.restaurantId === userData.restaurantId
-                                         && item.orderStatus != "COMPLETE") ?
+                                    key={product.name}
+                                    className={orders.some(item => item.tableName == product.name
+                                        && item.restaurantId == userData.restaurantId
+                                        && item.orderStatus != "COMPLETE") ?
                                         "btn btn-error" :
                                         "btn btn-outline btn-error"
                                     }
-                                    onClick={async ()=>{
+                                    onClick={async () => {
                                         const confirmed = window.confirm('Are you sure you want to delete this item?');
-                                        if(confirmed){
-                                            var resp = await deleteTables(userData.restaurantId, product);
-                                            if(resp.data){
+                                        if (confirmed) {
+                                            var resp = await deleteTables(userData.restaurantId, product.name, product.num);
+                                            if (resp.data) {
                                                 toast.success("Deleted");
                                                 dispatch(setRestaurantsTables(resp.data));
-                                            }else{
+                                            } else {
                                                 toast.error("Failed to delete");
                                             }
                                         }
                                     }}
-                                    >{product}
+                                >{product.name}
                                 </button>
                             ))
                         }

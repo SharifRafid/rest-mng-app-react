@@ -69,6 +69,7 @@ function Home() {
                         password: response.data.password,
                         name: response.data.name,
                         restaurantId: response.data.restaurantId,
+                        wifiPass: response.data.wifiPass,
                     }));
                     fetchProductsList(response.data.restaurantId);
                     dispatch(setRestaurantsTables(response.data.tables));

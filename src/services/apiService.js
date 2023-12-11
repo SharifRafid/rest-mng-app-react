@@ -71,11 +71,12 @@ export async function signUpAdmin(email, password, name) {
     }
 }
 
-export async function updateUser(email, password, name) {
+export async function updateUser(email, password, name, wifiPass) {
     try {
         var response = await axios
             .post(`${API_BASE_URL}/profile`,
                 {
+                    "wifiPass": wifiPass,
                     "email": email,
                     "password": password,
                     "name": name,
@@ -441,7 +442,8 @@ export async function placeOrder(email, password, restaurantId, totalPrice, tabl
                     "password": password,
                     "restaurantId": restaurantId,
                     "totalPrice": totalPrice,
-                    "tableName": tableName
+                    "tableName": tableName.name,
+                    "tableId": tableName.num,
                 },
                 {
                     headers: {
@@ -499,10 +501,10 @@ export async function changeOrderStatus(id, status) {
     }
 }
 
-export async function addRestaurantTable(id, name) {
+export async function addRestaurantTable(id, name, num) {
     try {
         var response = await axios
-            .post(`${API_BASE_URL}/res-tables?id=${id}&name=${name}`);
+            .post(`${API_BASE_URL}/res-tables?id=${id}&name=${name}&num=${num}`);
         return response;
     } catch (error) {
         console.log(error);
@@ -523,10 +525,10 @@ export async function getTables(restaurantId) {
 }
 
 
-export async function deleteTables(restaurantId,tableName) {
+export async function deleteTables(restaurantId, tableName, tableNum) {
     try {
         var response = await axios
-            .delete(`${API_BASE_URL}/delete-tables?id=${restaurantId}&name=${tableName}`);
+            .delete(`${API_BASE_URL}/delete-tables?id=${restaurantId}&name=${tableName}&num=${tableNum}`);
         return response;
     } catch (error) {
         console.log(error);

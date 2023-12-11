@@ -87,6 +87,7 @@ const LoginPage = () => {
                     password: response.data.password,
                     name: response.data.name,
                     restaurantId: response.data.restaurantId,
+                    wifiPass: response.data.wifiPass,
                 }));
             }
         } else {

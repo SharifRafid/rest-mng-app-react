@@ -30,6 +30,10 @@ const OrderList = () => {
                                 {/* <p>Restaurant ID: {order.restaurantId}</p> */}
                                 <p>Total Price: {order.totalPrice}</p>
                                 <p>Customer ID: {order.customerId}</p>
+                                <p>Wifi Pass: {order.wifiPass}</p>
+                                <p>Table Name: {order.tableName}</p>
+                                <p>Table No: {order.tableId}</p>
+                                <p>Order Status: {order.orderStatus}</p>
                                 <h3>Products:</h3>
                                 <ul>
                                     {order.products.map(product => (

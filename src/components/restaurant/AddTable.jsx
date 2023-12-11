@@ -14,6 +14,7 @@ const AddTable = () => {
 
     const [formData, setFormData] = useState({
         name: '',
+        num: '',
     });
 
     const handleInputChange = (e) => {
@@ -22,7 +23,7 @@ const AddTable = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.name == "") {
+        if (formData.name == "" && formData.num == "") {
             toast.error("Name Cannot Be Empty");
             return;
         }
@@ -30,10 +31,12 @@ const AddTable = () => {
             const response = await addRestaurantTable(
                 userData.restaurantId,
                 formData.name,
+                formData.num,
             );
             if (response.data) {
                 setFormData({
                     name: '',
+                    num: '',
                 });
                 dispatch(setRestaurantsTables(response.data.tables));
                 toast.success("Successfully added table.");
@@ -55,6 +58,14 @@ const AddTable = () => {
                 placeholder="Name"
                 name="name"
                 value={formData.name}
+                onChange={handleInputChange}
+            />
+            <input
+                className="input m-4 input-bordered input-primary w-full max-w-xs"
+                type="text"
+                placeholder="Table No"
+                name="num"
+                value={formData.num}
                 onChange={handleInputChange}
             />
             <button className="btn m-4 btn-primary" type="submit">Submit</button>

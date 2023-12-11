@@ -50,7 +50,7 @@ const CartPage = () => {
                             onClick={() => handleButtonClick(tableItem)}
                             className={`btn ${selectedOption === tableItem ? 'btn-primary' : 'btn-secondary'}`}
                         >
-                            {tableItem}
+                            {tableItem.name}
                         </button>
                     ))}
                 </div>
